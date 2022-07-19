@@ -1,5 +1,5 @@
+puts "--------------------Script running------------------"
 $regex = /\[ref: (\d+)\]/
-puts "Script running"
 # enforced custom commit message format
 def check_message_format
   missed_revs = `git rev-list #{$oldrev}..#{$newrev}`.split("\n")
