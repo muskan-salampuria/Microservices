@@ -1,8 +1,14 @@
-#!/usr/bin/env bash
-INPUT_FILE=$1
-START_LINE=`head -n1 $INPUT_FILE`
-PATTERN="^(Muskan)-[[:digit:]]+: "
-if ! [[ "$START_LINE" =~ $PATTERN ]]; then
-  echo "Bad commit message, see example: Muskan-123: commit message"
-  exit 1
-fi
+$regex = /\[ref: (\d+)\]/
+
+# enforced custom commit message format
+def check_message_format
+  missed_revs = `git rev-list #{$oldrev}..#{$newrev}`.split("\n")
+  missed_revs.each do |rev|
+    message = `git cat-file commit #{rev} | sed '1,/^$/d'`
+    if !$regex.match(message)
+      puts "[POLICY] Your message is not formatted correctly"
+      exit 1
+    end
+  end
+end
+check_message_format
